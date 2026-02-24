@@ -24,14 +24,18 @@ function timer(deadline) {
         };
     };
 
+    const formatedDate = (date) => {
+        return date < 10 ? "0" + date : date;
+    };
+
     const updateClock = () => {
         let { timeRemaining, days, hours, minutes, seconds } =
             getTimeRemaining();
 
-        timerDays.textContent = days < 10 ? "0" + days : days;
-        timerHours.textContent = hours < 10 ? "0" + hours : hours;
-        timerMinutes.textContent = minutes < 10 ? "0" + minutes : minutes;
-        timerSeconds.textContent = seconds < 10 ? "0" + seconds : seconds;
+        timerDays.textContent = formatedDate(days);
+        timerHours.textContent = formatedDate(hours);
+        timerMinutes.textContent = formatedDate(minutes);
+        timerSeconds.textContent = formatedDate(seconds);
 
         if (timeRemaining <= 0) {
             timerDays.textContent = "00";
