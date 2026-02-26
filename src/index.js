@@ -4,10 +4,12 @@ import modal from "./modules/modal";
 import tabs from "./modules/tabs";
 import validateInputs from "./modules/validateInputs";
 import slider from "./modules/slider";
+import calc from "./modules/calc";
 
 timer("26 April 2026");
 menu();
 modal();
 tabs();
+calc(100);
 slider();
 validateInputs();
