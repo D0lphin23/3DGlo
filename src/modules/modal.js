@@ -1,3 +1,5 @@
+import { animate } from "./helpers";
+
 const modal = () => {
     const modal = document.querySelector(".popup");
     const buttons = document.querySelectorAll(".popup-btn");
@@ -5,11 +7,9 @@ const modal = () => {
     const screenWidth = window.innerWidth;
 
     const startPosition = -300;
-    const endPosition = 0;
-    const duration = 500; // Длительность анимации в миллисекундах
+    const duration = 500;
     const distance = 300;
 
-    let startTime = null;
 
     buttons.forEach((button) =>
         button.addEventListener("click", () => {
@@ -18,36 +18,24 @@ const modal = () => {
             if (screenWidth > 768) {
                 modalContent.style.transform = `translateY(${startPosition}px)`;
 
-                startTime = null;
-
-                requestAnimationFrame(animateModal);
+                animate({
+                    duration,
+                    timing: (percent) => percent,
+                    draw: (progress) => {
+                        const currentPosition =
+                            startPosition + distance * progress;
+                        modalContent.style.transform = `translateY(${currentPosition}px)`;
+                    },
+                });
             }
         }),
     );
 
-    function animateModal(time) {
-        if (!startTime) {
-            startTime = time;
-        }
-
-        const progress = time - startTime;
-        let percent = progress / duration;
-
-        if (percent > 1) percent = 1;
-
-        const currentPosition = startPosition + distance * percent;
-
-        modalContent.style.transform = `translateY(${currentPosition}px)`;
-
-        if (progress < duration) {
-            requestAnimationFrame(animateModal);
-        } else {
-            modalContent.style.transform = `translateY(${endPosition}px)`;
-        }
-    }
-
     modal.addEventListener("click", (e) => {
-        if (!e.target.closest(".popup-content") || e.target.classList.contains("popup-close")) {
+        if (
+            !e.target.closest(".popup-content") ||
+            e.target.classList.contains("popup-close")
+        ) {
             modal.style.display = "none";
         }
     });

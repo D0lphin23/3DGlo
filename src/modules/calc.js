@@ -1,3 +1,5 @@
+import { animate } from "./helpers";
+
 const calc = (price = 100) => {
     const calcBlock = document.querySelector(".calc-block");
     const calcType = calcBlock.querySelector(".calc-type");
@@ -6,33 +8,7 @@ const calc = (price = 100) => {
     const calcDay = calcBlock.querySelector(".calc-day");
     const total = document.getElementById("total");
 
-    let animateId;
-
-    const animateValue = (start, end, duration) => {
-        let startTime = null;
-
-        const step = (time) => {
-            if (!startTime) {
-                startTime = time;
-            }
-
-            const progress = time - startTime;
-            const percent = Math.min(progress / duration, 1);
-            const current = Math.floor(start + (end - start) * percent);
-
-            total.textContent = current;
-
-            if (percent < 1) {
-                animateId = requestAnimationFrame(step);
-            }
-        };
-
-        if (animateId) {
-            cancelAnimationFrame(animateId);
-        }
-
-        animateId = requestAnimationFrame(step);
-    };
+    const duration = 500;
 
     const countCalc = () => {
         const calcTypeValue = +calcType.options[calcType.selectedIndex].value;
@@ -64,7 +40,16 @@ const calc = (price = 100) => {
         }
 
         const startValue = +total.textContent || 0;
-        animateValue(startValue, totalValue, 500);
+        animate({
+            duration,
+            timing: (percent) => percent,
+            draw: (progress) => {
+                const currentValue = Math.floor(
+                    startValue + (totalValue - startValue) * progress,
+                );
+                total.textContent = currentValue;
+            },
+        });
     };
 
     calcBlock.addEventListener("input", (e) => {
