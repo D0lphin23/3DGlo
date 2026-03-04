@@ -5,6 +5,7 @@ import tabs from "./modules/tabs";
 import validateInputs from "./modules/validateInputs";
 import slider from "./modules/slider";
 import calc from "./modules/calc";
+import serverRequest from "./modules/serverRequest";
 
 timer("26 April 2026");
 menu();
@@ -13,3 +14,4 @@ tabs();
 calc(100);
 slider();
 validateInputs();
+serverRequest();
